@@ -17,6 +17,7 @@ function ContactsList() {
         (contact) =>
           contact.name.toLowerCase().includes(search.toLowerCase().trim()) ||
           contact.email.toLowerCase().includes(search.toLowerCase().trim()) ||
+          contact.lastName.toLowerCase().includes(search.toLowerCase().trim()) ||
           contact.phone.includes(search.trim())
       )
     : contacts;
