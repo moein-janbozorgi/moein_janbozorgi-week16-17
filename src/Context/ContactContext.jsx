@@ -1,5 +1,5 @@
-import axios from "axios";
 import { createContext, useEffect, useReducer } from "react";
+import api, { getContact } from "../services/config";
 
 const initalState = {
   contacts: [],
@@ -50,12 +50,7 @@ function ContactContext({ children }) {
 
   useEffect(() => {
     const fetchContacts = async () => {
-      try {
-        const res = await axios.get("http://localhost:4000/contacts");
-        dispatch({ type: "FETCHDATA", payload: res.data });
-      } catch (error) {
-        throw new Error("No Data");
-      }
+       getContact(dispatch);
     };
     fetchContacts();
   }, []);

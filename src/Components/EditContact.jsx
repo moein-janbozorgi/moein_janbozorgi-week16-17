@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./EditContact.module.css";
-import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ContContext } from "../Context/ContactContext";
+import { editConact } from "../services/config";
+import schema from "../utils/helper";
 
 function EditContact({
   setEditModal,
@@ -15,80 +17,65 @@ function EditContact({
 }) {
   const { dispatch } = useContext(ContContext);
 
-  const [data, setData] = useState({
-    name,
-    lastName,
-    email,
-    phone,
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name,
+      lastName,
+      email,
+      phone,
+    },
   });
 
-  const saveHandler = async () => {
-    if (
-      !data.name ||
-      data.name.length > 8 ||
-      data.lastName.length > 12 ||
-      !data.lastName ||
-      data.phone.length !== 11 ||
-      !data.phone ||
-      !data.email ||
-      !data.email.includes("@")
-    ) {
-      alert("enter valid data");
-      return;
-    }
-    try {
-      const res = await axios.put(`http://localhost:4000/contacts/${id}`, data);
-      dispatch({ type: "EDITCONTACT", payload: res.data });
-      setEditModal((s) => !s);
-      setStyle((s) => !s);
-    } catch (error) {
-      alert("Something went wrong");
-    }
+  useEffect(() => {
+    reset({ name, lastName, email, phone });
+  }, [name, lastName, email, phone, reset]);
+
+  const onSubmit = (data) => {
+    editConact(id, setEditModal, setStyle, dispatch, data);
   };
 
-  const cansleEditHandler = () => {
-    setEditModal((s) => !s);
-    setStyle((s) => !s);
+  const cancelEditHandler = () => {
+    setEditModal(false);
+    setStyle(false);
   };
 
   return (
-    <div className={styles.container}>
+    <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.main}>
         <div className={styles.inputs}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
-          />
+          <input type="text" placeholder="Name" {...register("name")} />
+          {errors.name && <p className={styles.error}>{errors.name.message}</p>}
 
-          <input
-            type="text"
-            placeholder="LastName"
-            value={data.lastName}
-            onChange={(e) => setData({ ...data, lastName: e.target.value })}
-          />
+          <input type="text" placeholder="LastName" {...register("lastName")} />
+          {errors.lastName && (
+            <p className={styles.error}>{errors.lastName.message}</p>
+          )}
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
-          />
+          <input type="email" placeholder="Email" {...register("email")} />
+          {errors.email && (
+            <p className={styles.error}>{errors.email.message}</p>
+          )}
 
-          <input
-            type="number"
-            placeholder="Phone"
-            value={data.phone}
-            onChange={(e) => setData({ ...data, phone: e.target.value })}
-          />
+          <input type="number" placeholder="Phone" {...register("phone")} />
+          {errors.phone && (
+            <p className={styles.error}>{errors.phone.message}</p>
+          )}
         </div>
       </div>
+
       <div className={styles.buttons}>
-        <button onClick={saveHandler}>Save changes</button>
-        <button onClick={cansleEditHandler}>Cansle changes</button>
+        <button type="submit">Save changes</button>
+        <button type="button" onClick={cancelEditHandler}>
+          Cancel changes
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
 

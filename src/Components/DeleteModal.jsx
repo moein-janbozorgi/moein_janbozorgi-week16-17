@@ -2,9 +2,9 @@ import axios from "axios";
 import styles from "./DeleteModal.module.css";
 import { useContext } from "react";
 import { ContContext } from "../Context/ContactContext";
+import api, { deleteContact } from "../services/config";
 
 function DeleteModal({ setShow, setStyle, id }) {
-
   const { dispatch } = useContext(ContContext);
 
   const cansleHandler = () => {
@@ -13,16 +13,7 @@ function DeleteModal({ setShow, setStyle, id }) {
   };
 
   const deleteHandler = async () => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:4000/contacts/${id}`
-      );
-      dispatch({ type: "DELETECONTACT", payload: id });
-      setShow((s) => !s);
-      setStyle((s) => !s);
-    } catch (error) {
-      console.error("Error while deleting:", error);
-    }
+    deleteContact(id, dispatch, setShow, setStyle);
   };
 
   return (
