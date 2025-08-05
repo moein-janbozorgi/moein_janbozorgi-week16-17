@@ -1,12 +1,56 @@
-# React + Vite
+# Contact Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+این برنامه از react-hook-form برای مدیریت اسان فرم و بهبود عملکرد برنامه استفاده میکند
+همچنین از کتابخانه yup برای امر validation استفاده شده که ترکیب ان با react-hook-form تجربه ای خوش به شما منتقل میکند
 
-Currently, two official plugins are available:
+## ویژگی‌ها:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+این برنامه به شما قابلیت افزودن, حذف گروهی کاربران, حذف تک کاربر, و ویرایش کاربر را میدهد
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## پیش نیاز ها:
+
+- Node.js نسخه 14 یا بالاتر
+- npm یا yarn
+- سرور backend فعال (در این پروژه فرض شده سرور روی `http://localhost:4000` در حال اجرا است)
+
+---
+
+# ساختار:
+
+src/
+├── components/ # کامپوننت‌های React مثل Contacts، EditContact و ...
+├── Context/ # Context API و Reducer برای مدیریت وضعیت
+├── services/ # فراخوانی API با axios
+├── utils/ # کدهای کمکی، ولیدیشن schema و ...
+├── constants/ # داده‌های ثابت مثل ورودی‌های فرم
+├── styles/ # فایل‌های CSS Module
+└── App.js # ورودی اصلی برنامه
+
+
+# نحوه اجرای برنامه :
+
+ 1- پروژه را کلون کنید
+
+  -- ```bash
+   git clone https://github.com/moein-janbozorgi/contact-management-app.git
+   cd contact-management-app
+
+   سپس 
+
+   npm install
+  
+  و بعد 
+
+  json-server --watch db.json --port 4000
+
+  سپس 
+
+  npm run dev پروژه را اجرا کنید
+
+
+  # اطلاعات تماس 
+
+  شماره همراه 09370952694
+  ایمیل : moeinjanb84@gmail.com
